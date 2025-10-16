@@ -3,8 +3,8 @@ version: 0.2
 env:
   variables:
     # Basic configuration
-    BATCH_CPUS: "8"
-    BATCH_MEMORY: "10240"
+    BATCH_CPUS: "16"
+    BATCH_MEMORY: "32768"
     BUILD_TARGET: "."
     CONFIG_FILES: "profiles/wadoh/configfile_wadoh.yaml"
 
