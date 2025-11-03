@@ -16,9 +16,7 @@ rule filter_wa:
         #group_by=config["filter"]["group_by"],
         min_coverage=lambda w: f'{w.build_name}_coverage>{config["filter"]["min_coverage"].get(w.build_name, 10000)}',
         min_length=lambda w: config["filter"]["min_length"].get(w.build_name, 10000),
-        subsample_max_sequences=lambda w: config["filter"][
-            "subsample_max_sequences"
-        ].get(w.build_name, 1000),
+        subsample_max_sequences=config["filter"]["subsample_max_sequences"]["genome"]["state"],
         strain_id=config["strain_id_field"],
         min_date=lambda w: config["filter"]["resolutions"][w.resolution]["min_date"],
     shell:
@@ -56,12 +54,9 @@ rule filter_contextual:
         group_by=config["filter"]["group_by"],
         min_coverage=lambda w: f'{w.build_name}_coverage>{config["filter"]["min_coverage"].get(w.build_name, 10000)}',
         min_length=lambda w: config["filter"]["min_length"].get(w.build_name, 10000),
-        subsample_max_sequences=lambda w: config["filter"]["subsample_max_sequences"].get(w.build_name, 3000),
+        subsample_max_sequences=config["filter"]["subsample_max_sequences"]["genome"]["background"],
         strain_id=config["strain_id_field"],
-        max_date=lambda w: config["filter"]["resolutions"][w.resolution]["min_date"],
-        min_date=lambda w: config["filter"]["resolutions"][w.resolution][
-            "background_min_date"
-        ],
+        min_date=lambda w: config["filter"]["resolutions"][w.resolution]["background_min_date"],
     shell:
         """
         augur filter \
