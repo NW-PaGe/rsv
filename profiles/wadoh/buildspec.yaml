@@ -22,7 +22,6 @@ version: 0.2
 # - BUILD_NAME: Descriptive name for logging
 # =============================================================================
 
-
 env:
   variables:
     # -------------------------------------------------------------------------
@@ -30,7 +29,7 @@ env:
     # -------------------------------------------------------------------------
     BUILD_NAME: "RSV"
     BUILD_TARGET: "."
-    CONFIG_FILES: "config/nextstrain-automation.yaml profiles/wadoh/configfile_wadoh.yaml"
+    CONFIG_FILES: "profiles/wadoh/configfile_wadoh.yaml"
     NEXTSTRAIN_GROUP: "nextstrain.org/groups/wadoh-private"
 
     # -------------------------------------------------------------------------
@@ -39,7 +38,7 @@ env:
     BATCH_CPUS: "8"
     BATCH_MEMORY: "10240"
 
- # -------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
     # These must be set in CodeBuild Environment Variables (not here):
     # - BATCH_QUEUE (Type: plaintext)
     # - BATCH_JOB_DEFINITION (Type: plaintext)
