@@ -6,6 +6,18 @@ builds_to_run: ["genome", "G", "F"]
 
 resolutions_to_run: ["all-time", "6y", "3y"]
 
+subtypes: ['a', 'b']
+
+# Both files must have a {a_or_b} expandable field to be replaced by "a" or "b"
+# depending on if they are specified in the `subtypes` param above
+inputs:
+  - name: ppx_open
+    metadata: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/metadata.tsv.gz"
+    sequences: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/sequences.fasta.xz"
+  - name: ppx_restricted
+    metadata: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/metadata_restricted.tsv.gz"
+    sequences: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/sequences_restricted.fasta.xz"
+
 exclude: "config/outliers_ppx.txt"
 
 description: "config/description.md"
@@ -13,7 +25,6 @@ description: "config/description.md"
 strain_id_field: "accession"
 display_strain_field: "strain"
 
-subtypes: ['a', 'b']
 
 filter:
   group_by: "year country"
@@ -31,10 +42,13 @@ filter:
       min_date: 1975-01-01
     6y:
       min_date: 6Y
-      background_min_date: 1975-01-01
+      background_min_date: 12Y
     3y:
       min_date: 3Y
-      background_min_date: 1975-01-01
+      background_min_date: 12Y
+    1y:
+      min_date: 1Y
+      background_min_date: 12Y
 
   subsample_max_sequences:
     genome: 3000
@@ -59,7 +73,7 @@ cds:
   genome: "F"
 
 traits:
-  columns: "country"
+  columns: "country region"
 
 nextclade_attributes:
   a:
