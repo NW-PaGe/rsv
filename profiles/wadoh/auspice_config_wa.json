@@ -7,6 +7,10 @@
     {
       "name": "GenBank",
       "url": "https://www.ncbi.nlm.nih.gov/genbank/"
+    },
+    {
+      "name": "Pathoplexus",
+      "url": "https://pathoplexus.org"
     }
   ],
   "build_url": "https://github.com/NW-PaGe",
@@ -35,7 +39,11 @@
       "key": "division",
       "title": "Division",
       "type": "categorical"
-
+    },
+    {
+      "key": "dataUseTerms",
+      "title": "Data use terms",
+      "type": "categorical"
     },
     {
       "key": "glyc",
@@ -88,10 +96,15 @@
       "type": "ordinal"
     }
   ],
+  "metadata_columns": [
+    "PPX_accession",
+    "INSDC_accession",
+    "restrictedUntil"
+  ],
   "geo_resolutions": [
+    "division",
     "country",
-    "region",
-    "division"
+    "region"
   ],
   "panels": [
      "tree",
@@ -101,13 +114,13 @@
   ],
   "display_defaults": {
     "map_triplicate": true,
-    "color_by": "clade",
+    "color_by": "clade_membership",
     "transmission_lines": false
   },
   "filters": [
+    "division",
     "country",
     "region",
-    "division",
     "clade_membership"
   ]
 }
