@@ -450,7 +450,7 @@ rule realign:
         "logs/realign_{a_or_b}_{build_name}_{resolution}_{gene}.txt"
     benchmark:
         "benchmarks/realign_{a_or_b}_{build_name}_{resolution}_{gene}.txt"
-    threads: 4
+    threads: 2
     shell:
         r"""
         exec &> >(tee {log:q})
@@ -518,7 +518,7 @@ rule tree:
         "logs/tree_{a_or_b}_{build_name}_{resolution}.txt"
     benchmark:
         "benchmarks/tree_{a_or_b}_{build_name}_{resolution}.txt"
-    threads: 4
+    threads: 2
     shell:
         r"""
         exec &> >(tee {log:q})

@@ -55,7 +55,7 @@ jobs:
           --detach \
           --no-download \
           --cpus 16 \
-          --memory 64gib \
+          --memory 28GiB \
           . \
           deploy \
             --configfiles config/configfile.yaml config/nextstrain_automation.yaml \
