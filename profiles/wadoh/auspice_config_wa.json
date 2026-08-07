@@ -1,7 +1,7 @@
 {
   "title": "Genomic epidemiology of RSV - Washington-focused",
   "maintainers": [
-    {"name": "WA DOH Molecular Epidemiology Program", "url": "https://github.com/NW-PaGe"}
+    {"name": "WA DOH Molecular Epidemiology Program", "url": "https://doh.wa.gov/about-us/executive-offices/health-and-science/disease-control-and-health-statistics/communicable-disease-epidemiology/molecular-epidemiology-program"}
   ],
   "data_provenance": [
     {
@@ -13,7 +13,7 @@
       "url": "https://pathoplexus.org"
     }
   ],
-  "build_url": "https://github.com/NW-PaGe",
+  "build_url": "https://github.com/NW-PaGe/rsv",
   "colorings": [
     {
       "key": "gt",
