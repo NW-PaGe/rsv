@@ -450,7 +450,7 @@ rule realign:
         "logs/realign_{a_or_b}_{build_name}_{resolution}_{gene}.txt"
     benchmark:
         "benchmarks/realign_{a_or_b}_{build_name}_{resolution}_{gene}.txt"
-    threads: 4
+    threads: 2
     shell:
         r"""
         exec &> >(tee {log:q})
@@ -518,7 +518,7 @@ rule tree:
         "logs/tree_{a_or_b}_{build_name}_{resolution}.txt"
     benchmark:
         "benchmarks/tree_{a_or_b}_{build_name}_{resolution}.txt"
-    threads: 4
+    threads: 2
     shell:
         r"""
         exec &> >(tee {log:q})
@@ -554,6 +554,7 @@ rule refine:
         clock_filter_iqd=config["refine"]["clock_filter_iqd"],
         date_inference=config["refine"]["date_inference"],
         strain_id=config["strain_id_field"],
+        divergence_units=config["refine"]["divergence_units"],
     shell:
         r"""
         exec &> >(tee {log:q})
@@ -570,7 +571,8 @@ rule refine:
             --timetree \
             --stochastic-resolve \
             --use-fft \
-            --clock-filter-iqd {params.clock_filter_iqd}
+            --clock-filter-iqd {params.clock_filter_iqd} \
+            --divergence-units {params.divergence_units}
         """
 
 

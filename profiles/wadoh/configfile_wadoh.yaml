@@ -37,7 +37,7 @@ filter:
     F: 0.3
 
   min_length:
-    genome: 10000
+    genome: 14500
     G: 600
     F: 1200
   resolutions: #If adding new resolutions, need to add to config/distance_maps.tsv
@@ -66,6 +66,7 @@ refine:
   coalescent: "opt"
   date_inference: "marginal"
   clock_filter_iqd: 4
+  divergence_units: "mutations"
 
 ancestral:
   inference: "joint"
