@@ -77,6 +77,27 @@ nextstrain build . --configfile profiles/wadoh/configfile_wadoh.yaml
 
 To test the pipeline with the provided example data located in ```example_data/```, you will need to copy over the contents of this folder, including the ```a/``` and ```b/``` subfolders, into the ```data/``` folder. The Snakefile will pull ingest the contents of the ```data/``` folder into the build.
 
+#### Run the Build with Private Data Spike in
+
+This will incorporate whatever private data you provide alongside the exiting ingest & sampling rules. 
+
+1. Edit line 23 of ```profiles/wadoh/private-config.yaml``` to specify the subtype(s) you have private data for (accepts any of: ```subtypes: ['A'], ['B'], or ['A', 'B']```).
+2. Add private data:
+    - ```private_data/{a_or_b}/private_metadata.tsv``` A template is provided. Metadata must include the below columns:
+        - ```accession```: The WA ID associated with the sample
+        - ```strain```: Also the WA ID - this replaces accession as the ID in the final .json
+        - ```date```: in format XXXX-XX-XX (note that this workflow exludes samples with date ambiguity by year - ie. 2026-XX-XX is ok but 202X-XXX-XXX is not)
+        - ```division```: 'Washington'
+        - ```country```: 'USA'
+        - ```qc.overallStatus```: ex. 'good'
+        - ```genome_coverage```: ex. 1
+        - ```missing_data```: 0
+    - ```private_data/{a_or_b}/private_sequences.fasta```
+3. Run with
+    ```
+    nextstrain build . --configfile profiles/wadoh/private-config.yaml
+    ```
+
 ### Repository File Structure Overview
 The file structure of the repository is as follows with `*`" folders denoting folders that are the build's expected outputs.
 
