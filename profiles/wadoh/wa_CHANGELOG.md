@@ -4,6 +4,8 @@ We use this CHANGELOG to document breaking changes, bug fixes, and config value 
 
 ## 2026
 
-* 07 Aug 2026: Increased min_length threshold for genome from 10,000 to 14,5000. Results in loss of 52 seqeunces, which includes a loss of 35 WA sequences 
+* 07 Aug 2026: Increased min_length threshold for genome from 10,000 to 14,5000. Results in:
+  *  RSV A: loss of 52 seqeunces, which includes a loss of 35 WA sequences
+  *  RSV B: forgot to log
 
 * 06 Aug 2026: Changed divergence units from mutations-per-site to mutations.
