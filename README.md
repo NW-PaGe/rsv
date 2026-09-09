@@ -86,7 +86,7 @@ This will incorporate whatever private data you provide alongside the exiting in
     - ```private_data/{a_or_b}/private_metadata.tsv``` Metadata must include the below columns:
         - ```accession```: The WA ID associated with the sample
         - ```strain```: Also the WA ID - this replaces accession as the ID in the final .json
-        - ```date```: in format XXXX-XX-XX (note that this workflow excludes samples with date ambiguity by year - ie. 2026-XX-XX is ok but 202X-XXX-XXX is not)
+        - ```date```: in format YYYY-MM-DD (Use X for any unknown digit; note that this workflow excludes samples with date ambiguity by year - ie. 2026-XX-XX is ok but 202X-XXX-XXX is not - TO DO: verify this!)
         - ```division```: 'Washington'
         - ```country```: 'USA'
         - ```qc.overallStatus```: ex. 'good'
