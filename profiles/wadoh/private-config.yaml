@@ -18,6 +18,11 @@ inputs:
     metadata: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/metadata_restricted.tsv.gz"
     sequences: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/sequences_restricted.fasta.xz"
 
+additional_inputs:
+  - name: private-data
+    metadata: private_data/{a_or_b}/metadata.tsv
+    sequences: private_data/{a_or_b}/sequences.fasta
+
 exclude: "config/outliers_ppx.txt"
 
 description: "config/description.md"
@@ -43,6 +48,8 @@ custom_subsample:
         - qc.overallStatus=mediocre
         group_by:
         - year
+        - country
+        - division
         max_sequences: 2000
         min_date: 12Y
         max_date: 6Y
@@ -90,6 +97,8 @@ custom_subsample:
         - qc.overallStatus=mediocre
         group_by:
         - year
+        - country
+        - division
         max_sequences: 3000
         min_date: 12Y
         max_date: 6Y

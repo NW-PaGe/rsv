@@ -52,6 +52,9 @@ RSV sequences and metadata can be downloaded in the `/ingest` folder using
 `nextstrain build --cpus 1 ingest` or `nextstrain build --cpus 1 .` if running directly from the `/ingest` directory.
 
 ### Setup & Dependencies
+
+(to execute the basic workflow, skip to `Running the Build`)
+
 #### Installation
 
 Follow the standard [installation instructions](https://docs.nextstrain.org/en/latest/install.html) for Nextstrain's suite of software tools.
@@ -60,11 +63,47 @@ To check that Nextstrain is installed:
 ```
 nextstrain check-setup
 ```
+
 #### Clone the repository:
 
 ```
 git clone https://github.com/NW-PaGe/rsv.git
 cd rsv
+```
+
+From within the repository the build can be run with:
+```
+nextstrain build . --configfile profiles/wadoh/configfile_wadoh.yaml
+```
+The workflow's intermediate files will be output to `results/` and the final
+outputs will be in `auspice/`.
+
+Once you've run the build, you can view the results with:
+
+    nextstrain view .
+
+
+#### Configuration
+
+The workflow is contained in the [Snakefile](Snakefile) with included
+[rules](workflow/snakemake_rules/). Each rule specifies its file inputs and outputs
+and pulls its parameters from the config. There is little redirection and each
+rule should be able to be reasoned with on its own.
+
+#### Default input data
+
+The default builds start from the public Nextstrain data that have been preprocessed
+and cleaned from [Pathoplexus][] that includes [RESTRICTED data][].
+The [default auspice_config.json](./config/auspice_config.json) includes the
+`metadata_columns` "PPX_accession", "INSDC_accession", and "restrictedUntil"
+to ensure the builds adhere to the [Pathoplexus data use terms][].
+
+```yaml
+subtypes: ['a', 'b']
+inputs:
+  - name: ppx_with_restricted
+    metadata: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/metadata_with_restricted.tsv.gz"
+    sequences: "https://data.nextstrain.org/files/workflows/rsv/{a_or_b}/sequences_with_restricted.fasta.xz"
 ```
 
 #### Running the Build
@@ -73,26 +112,35 @@ From within the repository the build can be run with:
 nextstrain build . --configfile profiles/wadoh/configfile_wadoh.yaml
 ```
 
-#### Run the Build with Test Data
+#### Running the Build with Test Data
 
 To test the pipeline with the provided example data located in ```example_data/```, you will need to copy over the contents of this folder, including the ```a/``` and ```b/``` subfolders, into the ```data/``` folder. The Snakefile will pull ingest the contents of the ```data/``` folder into the build.
 
-#### Run the Build with Private Data Spike in
+#### Running the Build with Private Data Spike in
 
-This will incorporate whatever private data you provide alongside the exiting ingest & sampling rules. 
+This will incorporate whatever private data you provide alongside the exiting ingest & sampling rules. Note that the private data is merged before the subsampling step. To ensure you're samples are included, set the `division` to "Washington", which does not have a maximum sample size and make sure the qc values pass the hard quality and date filters specified under:
+```
+custom_subsample:
+  {a or b}/{genome or E1}/6y:
+    samples:
+      {wa_recent or wa_background}:
+```
+Alternatively (BUT UNTESTED), you should be able to add a column to the metadata of `data_source` wiht value `"private-data"` and add a seperate subsampling scheme that includes all samples based on that filter.
 
-1. Edit line 23 of ```profiles/wadoh/private-config.yaml``` to specify the subtype(s) you have private data for (accepts any of: ```subtypes: ['A'], ['B'], or ['A', 'B']```).
-2. Add private data:
+1. **Add private data:**
     - ```private_data/{a_or_b}/private_metadata.tsv``` Metadata must include the below columns:
         - ```accession```: The WA ID associated with the sample
         - ```strain```: Also the WA ID - this replaces accession as the ID in the final .json
-        - ```date```: in format XXXX-XX-XX (note that this workflow excludes samples with date ambiguity by year - ie. 2026-XX-XX is ok but 202X-XXX-XXX is not)
+        - ```date```: in format YYYY-MM-DD, with X's to replace unknown values (note that this workflow excludes samples with date ambiguity by year - ie. 2026-XX-XX is ok but 202X-XXX-XXX is not)
         - ```division```: 'Washington'
         - ```country```: 'USA'
         - ```qc.overallStatus```: ex. 'good'
         - ```genome_coverage```: ex. 1
         - ```missing_data```: 0
     - ```private_data/{a_or_b}/private_sequences.fasta```
+
+2. **Edit the config if necessary.** Private data runs are processed with ```profiles/wadoh/private-config.yaml```, which should exactly match `config_wadoh.yaml`, but with the inclusion of the private data via the `additional_inputs` section. To run for only subtype A, you would specify only `['A']` for the `subtype` and change `{a_or_b}` to `a` in the `additional_inputs` file paths. You may also want to change the subsampling scheme to focus on different contextual samples. 
+
 3. Run with
     ```
     nextstrain build . --configfile profiles/wadoh/private-config.yaml
@@ -130,13 +178,14 @@ The file structure of the repository is as follows with `*`" folders denoting fo
 - `ingest`: Contains files for ingest pipeline. See following section.
 - `example_data`: Contains example data to be run through build for testing.
 - `nextclade`: This folder contains the workflow used to make the nextclade datasets for RSV. More information on nextclade datasets can be found in the [`nextclade repo`](https://github.com/nextstrain/nextclade_data).
+- (optional & untracked) `private_data`: place private data for spike-in here
 - `profiles`: Contains profiles that can be specified during pipeline
     - `default/`: Default profile files
     - `wadoh/`: contains files used for Washington-specific pipeline
         - `auspice_config_wa.json/`: Customized auspice configfile
         - `configfile_wadoh.yaml/`: Customized configfile
-        - `wa_filter.smk/`: Snakefile with customized rules
 - `scripts/`: A set of necessary python scripts used in pipeline
+- `shared/vendored/`: A subrepo that contains universal nextstrain scripts (updated regularly)
 - `workflow/`:
     - `snakemake_rules/`: contains a variety of snakemake rules. Most notably:
         - `core.smk`: The sequence of rules that will get followed in running the build, this includes indexing and aligning sequences, and filtering based on the criteria found in the config files.     
