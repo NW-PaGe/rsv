@@ -118,13 +118,20 @@ To test the pipeline with the provided example data located in ```example_data/`
 
 #### Running the Build with Private Data Spike in
 
-This will incorporate whatever private data you provide alongside the exiting ingest & sampling rules. 
+This will incorporate whatever private data you provide alongside the exiting ingest & sampling rules. Note that the private data is merged before the subsampling step. To ensure you're samples are included, set the `division` to "Washington", which does not have a maximum sample size and make sure the qc values pass the hard quality and date filters specified under:
+```
+custom_subsample:
+  {a or b}/{genome or E1}/6y:
+    samples:
+      {wa_recent or wa_background}:
+```
+Alternatively (BUT UNTESTED), you should be able to add a column to the metadata of `data_source` wiht value `"private-data"` and add a seperate subsampling scheme that includes all samples based on that filter.
 
 1. **Add private data:**
     - ```private_data/{a_or_b}/private_metadata.tsv``` Metadata must include the below columns:
         - ```accession```: The WA ID associated with the sample
         - ```strain```: Also the WA ID - this replaces accession as the ID in the final .json
-        - ```date```: in format XXXX-XX-XX (note that this workflow excludes samples with date ambiguity by year - ie. 2026-XX-XX is ok but 202X-XXX-XXX is not)
+        - ```date```: in format YYYY-MM-DD, with X's to replace unknown values (note that this workflow excludes samples with date ambiguity by year - ie. 2026-XX-XX is ok but 202X-XXX-XXX is not)
         - ```division```: 'Washington'
         - ```country```: 'USA'
         - ```qc.overallStatus```: ex. 'good'
