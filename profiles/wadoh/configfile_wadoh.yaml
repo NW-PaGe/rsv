@@ -90,7 +90,7 @@ custom_subsample:
         exclude_where:
         - qc.overallStatus=bad
         - qc.overallStatus=mediocre
-        group by:
+        group_by:
         - year
         - country
         - division
