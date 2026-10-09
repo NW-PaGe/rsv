@@ -120,8 +120,7 @@ To test the pipeline with the provided example data located in ```example_data/`
 
 This will incorporate whatever private data you provide alongside the exiting ingest & sampling rules. 
 
-1. Edit line 23 of ```profiles/wadoh/private-config.yaml``` to specify the subtype(s) you have private data for (accepts any of: ```subtypes: ['A'], ['B'], or ['A', 'B']```).
-2. Add private data:
+1. **Add private data:**
     - ```private_data/{a_or_b}/private_metadata.tsv``` Metadata must include the below columns:
         - ```accession```: The WA ID associated with the sample
         - ```strain```: Also the WA ID - this replaces accession as the ID in the final .json
@@ -132,6 +131,9 @@ This will incorporate whatever private data you provide alongside the exiting in
         - ```genome_coverage```: ex. 1
         - ```missing_data```: 0
     - ```private_data/{a_or_b}/private_sequences.fasta```
+
+2. **Edit the config if necessary.** Private data runs are processed with ```profiles/wadoh/private-config.yaml```, which should exactly match `config_wadoh.yaml`, but with the inclusion of the private data via the `additional_inputs` section. To run for only subtype A, you would specify only `['A']` for the `subtype` and change `{a_or_b}` to `a` in the `additional_inputs` file paths. You may also want to change the subsampling scheme to focus on different contextual samples. 
+
 3. Run with
     ```
     nextstrain build . --configfile profiles/wadoh/private-config.yaml
