@@ -43,8 +43,6 @@ custom_subsample:
         - qc.overallStatus=mediocre
         group_by:
         - year
-        - country
-        - division
         max_sequences: 2000
         min_date: 12Y
         max_date: 6Y
@@ -92,8 +90,6 @@ custom_subsample:
         - qc.overallStatus=mediocre
         group_by:
         - year
-        - country
-        - division
         max_sequences: 3000
         min_date: 12Y
         max_date: 6Y
